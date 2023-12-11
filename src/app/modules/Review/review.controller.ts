@@ -10,7 +10,7 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
-    message: 'Course created successfully!',
+    message: 'Course created successfully',
     data: Course,
   });
 });
@@ -21,7 +21,7 @@ const getReviews = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Reviews retrieved successfully!',
+    message: 'Reviews retrieved successfully',
     data: courses,
   });
 });
