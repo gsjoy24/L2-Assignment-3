@@ -25,13 +25,33 @@ const CourseSchema = new Schema<TCourse>({
       isDeleted: { type: Boolean, default: false },
     },
   ],
-  startDate: { type: String, required: [true, 'Start date is required'] },
-  endDate: { type: String, required: [true, 'End date is required'] },
-  language: { type: String, required: [true, 'Language is required'] },
-  provider: { type: String, required: [true, 'Provider is required'] },
+  startDate: {
+    type: String,
+    required: [true, 'Start date is required'],
+    trim: true,
+  },
+  endDate: {
+    type: String,
+    required: [true, 'End date is required'],
+    trim: true,
+  },
+  language: {
+    type: String,
+    required: [true, 'Language is required'],
+    trim: true,
+  },
+  provider: {
+    type: String,
+    required: [true, 'Provider is required'],
+    trim: true,
+  },
   details: {
-    level: { type: String, required: [true, 'Level is required'] },
-    description: { type: String, required: [true, 'Description is required'] },
+    level: { type: String, required: [true, 'Level is required'], trim: true },
+    description: {
+      type: String,
+      required: [true, 'Description is required'],
+      trim: true,
+    },
   },
 });
 

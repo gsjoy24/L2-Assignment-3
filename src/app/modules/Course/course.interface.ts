@@ -15,7 +15,6 @@ export type TCourse = {
   endDate: string;
   language: string;
   provider: string;
-  durationInWeeks: number;
   details: {
     level: string;
     description: string;
