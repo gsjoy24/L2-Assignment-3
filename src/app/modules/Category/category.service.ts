@@ -11,9 +11,21 @@ const getAllCategoriesFromDB = async () => {
   return categories;
 };
 
+const updateCategoryInDB = async (id: string, payload: TCategory) => {
+  const category = await Category.findByIdAndUpdate(id, payload, { new: true });
+  return category;
+};
+
+const deleteCategoryInDB = async (id: string) => {
+  const category = await Category.findByIdAndDelete(id);
+  return category;
+};
+
 const CategoryServices = {
   createCategoryIntoDB,
   getAllCategoriesFromDB,
+  updateCategoryInDB,
+  deleteCategoryInDB,
 };
 
 export default CategoryServices;
