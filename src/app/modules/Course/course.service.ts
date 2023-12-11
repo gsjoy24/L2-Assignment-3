@@ -11,9 +11,27 @@ const getAllCoursesFromDB = async () => {
   return courses;
 };
 
+const getSingleCourseFromDB = async (id: string) => {
+  const course = await Course.findById(id);
+  return course;
+};
+
 const updateCourseInDB = async (id: string, data: TCourse) => {
   const course = await Course.findByIdAndUpdate(id, data, { new: true });
   return course;
 };
 
-export { createCourseIntoDB, getAllCoursesFromDB, updateCourseInDB };
+const deleteCourseFromDB = async (id: string) => {
+  const course = await Course.findByIdAndDelete(id);
+  return course;
+};
+
+const CourseServices = {
+  createCourseIntoDB,
+  getAllCoursesFromDB,
+  getSingleCourseFromDB,
+  updateCourseInDB,
+  deleteCourseFromDB,
+};
+
+export default CourseServices;
