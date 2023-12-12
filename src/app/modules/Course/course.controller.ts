@@ -45,6 +45,15 @@ const getSingleWithReviewsCourse = catchAsync(
     const course = await CourseServices.getSingleCourseFromDB(id);
     const reviews = await ReviewServices.getReviewsFromDB(id);
 
+    if (!course) {
+      sendResponse(res, {
+        statusCode: httpStatus.NOT_FOUND,
+        success: false,
+        message: 'Course not found',
+        data: null,
+      });
+    }
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -70,6 +79,8 @@ const deleteCourse = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const course = await CourseServices.deleteCourseFromDB(id);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const reviews = await ReviewServices.deleteReviewFromDB(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

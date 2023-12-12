@@ -26,9 +26,23 @@ const getReviews = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteReview = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  const review = await ReviewServices.deleteReviewFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Course deleted successfully',
+    data: null,
+  });
+});
+
 const ReviewControllers = {
   createReview,
   getReviews,
+  deleteReview,
 };
 
 export default ReviewControllers;
