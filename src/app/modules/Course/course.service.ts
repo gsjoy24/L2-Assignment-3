@@ -1,3 +1,4 @@
+import httpStatus from 'http-status';
 import AppError from '../../errors/AppError';
 import ReviewServices from '../Review/review.service';
 import { TCourse } from './course.interface';
@@ -15,7 +16,6 @@ const getAllCoursesFromDB = async () => {
 
 const getSingleCourseFromDB = async (id: string) => {
   const course = await Course.findById(id);
-  console.log(course);
   return course;
 };
 
@@ -33,7 +33,7 @@ const getTheBestCourseFromDB = async () => {
   const courses = await CourseServices.getAllCoursesFromDB();
 
   if (courses.length === 0) {
-    throw new AppError(404, 'No courses found');
+    throw new AppError(httpStatus.NOT_FOUND, 'No courses found');
   }
 
   const reviews = await ReviewServices.getAllReviewsFromDB();
@@ -47,11 +47,11 @@ const getTheBestCourseFromDB = async () => {
     );
 
     const totalReviews = courseReviews.length;
-
     const sumRatings = courseReviews.reduce(
       (sum, review) => sum + review.rating,
       0,
     );
+
     const highestRating = sumRatings / totalReviews;
 
     if (highestRating > averageRating) {
