@@ -29,6 +29,56 @@ const updateCourseInDB = async (id: string, data: TCourse) => {
     }
   }
 
+  if (tags && tags.length > 0) {
+    //* deleting tags
+    const deletedTags = tags
+      .filter((tag) => tag.name && tag.isDeleted)
+      .map((tag) => tag.name);
+
+    const deleteTags = await Course.findByIdAndUpdate(
+      id,
+      {
+        $pull: {
+          tags: {
+            name: {
+              $in: deletedTags,
+            },
+          },
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!deleteTags) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update tags');
+    }
+
+    // adding tags
+    const addedTags = tags.filter((tag) => tag.name && !tag.isDeleted);
+
+    const addTag = await Course.findByIdAndUpdate(
+      id,
+      {
+        $addToSet: {
+          tags: {
+            $each: addedTags,
+          },
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+
+    if (!addTag) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update course');
+    }
+  }
+
   const course = await Course.findByIdAndUpdate(id, modifiedData, {
     new: true,
   });
