@@ -6,7 +6,6 @@ import CourseValidators from '../course.validation';
 const route = express.Router();
 
 // course routes
-
 route.post(
   '/',
   validateRequest(CourseValidators.CourseValidationSchema),

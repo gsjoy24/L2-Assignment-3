@@ -22,4 +22,5 @@ app.use(globalErrorHandler);
 
 // not found
 app.use(notFound);
+
 export default app;
