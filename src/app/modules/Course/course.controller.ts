@@ -78,12 +78,24 @@ const deleteCourse = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getTheBestCourse = catchAsync(async (req: Request, res: Response) => {
+  const bestCourse = await CourseServices.getTheBestCourseFromDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Best Course retrieved successfully',
+    data: bestCourse,
+  });
+});
+
 const CourseControllers = {
   createCourse,
   getAllCourses,
   getSingleCourseWithReviews,
   updateCourse,
   deleteCourse,
+  getTheBestCourse,
 };
 
 export default CourseControllers;

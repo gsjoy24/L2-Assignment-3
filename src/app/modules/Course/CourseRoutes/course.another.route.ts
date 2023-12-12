@@ -10,5 +10,6 @@ route.post(
   validateRequest(CourseValidators.CourseValidationSchema),
   CourseControllers.createCourse,
 );
+route.get('/best', CourseControllers.getTheBestCourse);
 
 export const CourseRoutesForPostAndBestCourse = route;

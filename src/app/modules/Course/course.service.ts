@@ -1,3 +1,4 @@
+import { Review } from '../Review/review.model';
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 
@@ -26,12 +27,22 @@ const deleteCourseFromDB = async (id: string) => {
   return course;
 };
 
+const getTheBestCourseFromDB = async () => {
+  const course = await Course.find();
+  const reviews = await Review.find();
+  return {
+    course,
+    reviews,
+  };
+};
+
 const CourseServices = {
   createCourseIntoDB,
   getAllCoursesFromDB,
   getSingleCourseFromDB,
   updateCourseInDB,
   deleteCourseFromDB,
+  getTheBestCourseFromDB,
 };
 
 export default CourseServices;
