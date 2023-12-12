@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 
 export type TCourse = {
+  _id?: Types.ObjectId;
   title: string;
   instructor: string;
   categoryId: Types.ObjectId;

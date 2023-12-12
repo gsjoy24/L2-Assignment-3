@@ -16,8 +16,8 @@ const ReviewValidationSchema = z.object({
         required_error: 'Rating is required',
         invalid_type_error: 'Rating must be a number',
       })
-      .int({
-        message: 'Rating must be an integer',
+      .nonnegative({
+        message: 'Rating cannot be negative',
       })
       .min(1, {
         message: 'Rating must be between 1 and 5',

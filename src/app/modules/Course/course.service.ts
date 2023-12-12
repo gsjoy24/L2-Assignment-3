@@ -1,4 +1,5 @@
-import { Review } from '../Review/review.model';
+import AppError from '../../errors/AppError';
+import ReviewServices from '../Review/review.service';
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 
@@ -14,6 +15,7 @@ const getAllCoursesFromDB = async () => {
 
 const getSingleCourseFromDB = async (id: string) => {
   const course = await Course.findById(id);
+  console.log(course);
   return course;
 };
 
@@ -28,11 +30,46 @@ const deleteCourseFromDB = async (id: string) => {
 };
 
 const getTheBestCourseFromDB = async () => {
-  const course = await Course.find();
-  const reviews = await Review.find();
+  const courses = await CourseServices.getAllCoursesFromDB();
+
+  if (courses.length === 0) {
+    throw new AppError(404, 'No courses found');
+  }
+
+  const reviews = await ReviewServices.getAllReviewsFromDB();
+  let course: TCourse | null = null;
+  let reviewCount: number = 0;
+  let averageRating: number = -1;
+
+  for (const singleCourse of courses) {
+    const courseReviews = reviews.filter(
+      (review) => String(review?.courseId) === String(singleCourse._id),
+    );
+
+    const totalReviews = courseReviews.length;
+
+    const sumRatings = courseReviews.reduce(
+      (sum, review) => sum + review.rating,
+      0,
+    );
+    const highestRating = sumRatings / totalReviews;
+
+    if (highestRating > averageRating) {
+      averageRating = Number(highestRating.toFixed(1));
+      course = singleCourse;
+    }
+  }
+
+  if (course) {
+    reviewCount = reviews.filter(
+      (review) => String(review?.courseId) === String(course?._id),
+    ).length;
+  }
+
   return {
     course,
-    reviews,
+    averageRating,
+    reviewCount,
   };
 };
 

@@ -17,10 +17,16 @@ const deleteReviewFromDB = async (courseId: string) => {
   return review;
 };
 
+const getAllReviewsFromDB = async () => {
+  const reviews = await Review.find();
+  return reviews;
+};
+
 const ReviewServices = {
   createReviewIntoDB,
   getReviewsFromDB,
   deleteReviewFromDB,
+  getAllReviewsFromDB,
 };
 
 export default ReviewServices;
