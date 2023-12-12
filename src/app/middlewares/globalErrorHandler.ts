@@ -23,6 +23,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     const simplifyError = handleZodError(err);
     statusCode = simplifyError?.statusCode;
     message = simplifyError?.message;
+    errorMessage = simplifyError?.errorMessage;
   } else if (err.name === 'ValidationError') {
     const simplifyError = handleValidationError(err);
     statusCode = simplifyError?.statusCode;
