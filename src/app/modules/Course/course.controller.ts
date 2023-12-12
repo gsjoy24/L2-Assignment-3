@@ -27,6 +27,18 @@ const getAllCourses = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getSingleCourse = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const course = await CourseServices.getSingleCourseFromDB(id);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Course retrieved successfully',
+    data: course,
+  });
+});
+
 const getSingleCourseWithReviews = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -92,6 +104,7 @@ const getTheBestCourse = catchAsync(async (req: Request, res: Response) => {
 const CourseControllers = {
   createCourse,
   getAllCourses,
+  getSingleCourse,
   getSingleCourseWithReviews,
   updateCourse,
   deleteCourse,

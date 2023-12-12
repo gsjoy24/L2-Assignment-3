@@ -20,7 +20,18 @@ const getSingleCourseFromDB = async (id: string) => {
 };
 
 const updateCourseInDB = async (id: string, data: TCourse) => {
-  const course = await Course.findByIdAndUpdate(id, data, { new: true });
+  const { details, tags, ...restData } = data;
+  const modifiedData: Record<string, unknown> = { ...restData };
+
+  if (details && Object.keys(details).length) {
+    for (const [key, value] of Object.entries(details)) {
+      modifiedData[`details.${key}`] = value;
+    }
+  }
+
+  const course = await Course.findByIdAndUpdate(id, modifiedData, {
+    new: true,
+  });
   return course;
 };
 
