@@ -33,8 +33,14 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
           },
         }
       : {};
-  
 
+  const sortBy = query?.sortBy || 'title';
+  const sortOrder = query?.sortOrder && query?.sortOrder === 'asc' ? 1 : -1;
+  const sort: string | { [key: string]: 'asc' | 'desc' } = query.sortBy
+    ? {
+        [sortBy as string]: sortOrder === 1 ? 'asc' : 'desc',
+      }
+    : '';
 
   excludeFields.forEach((field) => delete queryObject[field]);
 
@@ -46,7 +52,10 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
   const coursesWithTags = courses.find(searchTags);
   const coursesWithPrice = coursesWithTags.find(minMaxPrice);
 
-  const SortedCourses = await coursesWithPrice.limit(limit).skip(skip);
+  const SortedCourses = await coursesWithPrice
+    .limit(limit)
+    .skip(skip)
+    .sort(sort);
 
   return SortedCourses;
 };
