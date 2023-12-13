@@ -56,7 +56,7 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     queryObject['details.level'] = query.level;
   }
 
-  const courses = Course.find(queryObject);
+  const courses = Course.find(queryObject).populate('categoryId');
   const coursesWithTags = courses.find(searchTags);
   const coursesWithPrice = coursesWithTags.find(minMaxPrice);
 
@@ -74,12 +74,12 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleCourseFromDB = async (id: string) => {
-  const course = await Course.findById(id);
+  const course = await Course.findById(id).populate('categoryId');
   return course;
 };
 
 const updateCourseInDB = async (id: string, data: TCourse) => {
-  const { details, tags, startDate, endDate, ...restData } = data;
+  const { details, tags, ...restData } = data;
   const modifiedData: Record<string, unknown> = { ...restData };
 
   if (details && Object.keys(details).length) {
@@ -138,10 +138,10 @@ const updateCourseInDB = async (id: string, data: TCourse) => {
     }
   }
 
-  if (startDate && endDate) {
+  if (data.startDate && data.endDate) {
     modifiedData.durationInWeeks = dateToWeeks(
-      startDate as string,
-      endDate as string,
+      data.startDate as string,
+      data.endDate as string,
     );
   }
 
