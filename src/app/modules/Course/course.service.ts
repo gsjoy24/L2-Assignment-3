@@ -3,7 +3,8 @@ import AppError from '../../errors/AppError';
 import { TCourse } from './course.interface';
 import { Course } from './course.model';
 import { Review } from '../Review/review.model';
-import { excludeFields } from './CourseRoutes/course.constant';
+import { excludeFields } from './course.constant';
+import dateToWeeks from '../../utils/dateToWeeks';
 
 const createCourseIntoDB = async (data: TCourse) => {
   const course = await Course.create(data);
@@ -42,6 +43,13 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
       }
     : {};
 
+  if (query?.startDate && query?.endDate) {
+    queryObject.durationInWeeks = dateToWeeks(
+      query.startDate as string,
+      query.endDate as string,
+    );
+  }
+
   excludeFields.forEach((field) => delete queryObject[field]);
 
   if (query.level) {
@@ -51,7 +59,6 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
   const courses = Course.find(queryObject);
   const coursesWithTags = courses.find(searchTags);
   const coursesWithPrice = coursesWithTags.find(minMaxPrice);
-
   const SortedCourses = await coursesWithPrice
     .limit(limit)
     .skip(skip)

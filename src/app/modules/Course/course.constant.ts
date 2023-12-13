@@ -6,6 +6,8 @@ export const excludeFields = [
   'fields',
   'minPrice',
   'maxPrice',
+  'startDate',
+  'endDate',
   'tags',
   'level',
 ];

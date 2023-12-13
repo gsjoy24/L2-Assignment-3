@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { TCourse } from './course.interface';
+import dateToWeeks from '../../utils/dateToWeeks';
 
 const CourseSchema = new Schema<TCourse>({
   title: {
@@ -58,18 +59,8 @@ const CourseSchema = new Schema<TCourse>({
 
 // Pre-save hook || calculating durationInWeeks
 CourseSchema.pre('save', async function (next) {
-  // eslint-disable-next-line @typescript-eslint/no-this-alias
-  const course = this;
-  const startDate: string = course.startDate;
-  const endDate: string = course.endDate;
-
-  const start = new Date(startDate).getTime();
-  const end = new Date(endDate).getTime();
-  const differenceMs: number = Math.abs(end - start);
-
-  // Convert milliseconds to weeks
-  const weeks = Math.ceil(differenceMs / (1000 * 60 * 60 * 24 * 7));
-  course.durationInWeeks = weeks;
+  const weeks = dateToWeeks(this.startDate, this.endDate);
+  this.durationInWeeks = weeks;
   next();
 });
 
