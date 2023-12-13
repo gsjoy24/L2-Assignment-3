@@ -40,7 +40,7 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     ? {
         [sortBy as string]: sortOrder === 1 ? 'asc' : 'desc',
       }
-    : '';
+    : {};
 
   excludeFields.forEach((field) => delete queryObject[field]);
 
