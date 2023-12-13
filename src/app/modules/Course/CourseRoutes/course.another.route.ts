@@ -8,7 +8,7 @@ const route = express.Router();
 // course routes
 route.post(
   '/',
-  validateRequest(CourseValidators.CourseValidationSchema),
+  validateRequest(CourseValidators.CreateCourseValidationSchema),
   CourseControllers.createCourse,
 );
 route.get('/best', CourseControllers.getTheBestCourse);

@@ -10,7 +10,6 @@ const notFound = (
     success: false,
     status: httpStatus.NOT_FOUND,
     message: 'Not Found!',
-    error: 'Not Found!',
   });
 };
 

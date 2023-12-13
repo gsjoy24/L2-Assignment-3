@@ -22,6 +22,7 @@ const CourseSchema = new Schema<TCourse>({
   price: { type: Number, required: [true, 'Price is required'] },
   tags: [
     {
+      _id: false,
       name: { type: String, required: [true, 'Tag name is required'] },
       isDeleted: { type: Boolean, default: false },
     },

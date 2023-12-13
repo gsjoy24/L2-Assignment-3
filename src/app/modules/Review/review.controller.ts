@@ -34,7 +34,7 @@ const deleteReview = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Course deleted successfully',
+    message: 'Review deleted successfully',
     data: null,
   });
 });

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const CourseValidationSchema = z.object({
+const CreateCourseValidationSchema = z.object({
   body: z.object({
     title: z
       .string({
@@ -110,8 +110,126 @@ const CourseValidationSchema = z.object({
   }),
 });
 
+const UpdateCourseValidationSchema = z.object({
+  body: z.object({
+    title: z
+      .string({
+        invalid_type_error: 'Title must be a string',
+      })
+      .trim()
+      .nonempty({
+        message: 'Title cannot be empty',
+      })
+      .optional(),
+    instructor: z
+      .string({
+        invalid_type_error: 'Instructor must be a string',
+      })
+      .trim()
+      .nonempty({
+        message: 'Instructor cannot be empty',
+      })
+      .optional(),
+    categoryId: z
+      .string({
+        invalid_type_error: 'Category must be a string',
+      })
+      .trim()
+      .nonempty({
+        message: 'Category cannot be empty',
+      })
+      .optional(),
+    price: z
+      .number({
+        invalid_type_error: 'Price must be a number',
+      })
+      .nonnegative({
+        message: 'Price cannot be negative',
+      })
+      .optional(),
+    tags: z
+      .array(
+        z.object({
+          name: z
+            .string({
+              invalid_type_error: 'Tag name must be a string',
+              required_error: 'Tag name is required',
+            })
+            .trim()
+            .nonempty({
+              message: 'Tag name cannot be empty',
+            }),
+          isDeleted: z.boolean({
+            invalid_type_error: 'Tag isDeleted must be a boolean',
+            required_error: 'Tag isDeleted is required',
+          }),
+        }),
+      )
+      .optional(),
+    startDate: z
+      .string({
+        invalid_type_error: 'Start date must be a string',
+      })
+      .trim()
+      .nonempty({
+        message: 'Start date cannot be empty',
+      })
+      .optional(),
+    endDate: z
+      .string({
+        invalid_type_error: 'End date must be a string',
+      })
+      .trim()
+      .nonempty({
+        message: 'End date cannot be empty',
+      })
+      .optional(),
+    language: z
+      .string({
+        invalid_type_error: 'Language must be a string',
+      })
+      .trim()
+      .nonempty({
+        message: 'Language cannot be empty',
+      })
+      .optional(),
+    provider: z
+      .string({
+        invalid_type_error: 'Provider must be a string',
+      })
+      .trim()
+      .nonempty({
+        message: 'Provider cannot be empty',
+      })
+      .optional(),
+    details: z
+      .object({
+        level: z
+          .string({
+            invalid_type_error: 'Level must be a string',
+          })
+          .trim()
+          .nonempty({
+            message: 'Level cannot be empty',
+          })
+          .optional(),
+        description: z
+          .string({
+            invalid_type_error: 'Description must be a string',
+          })
+          .trim()
+          .nonempty({
+            message: 'Description cannot be empty',
+          })
+          .optional(),
+      })
+      .optional(),
+  }),
+});
+
 const CourseValidators = {
-  CourseValidationSchema,
+  CreateCourseValidationSchema,
+  UpdateCourseValidationSchema,
 };
 
 export default CourseValidators;

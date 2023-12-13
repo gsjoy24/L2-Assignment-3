@@ -1,5 +1,7 @@
 import express from 'express';
 import CourseControllers from '../course.controller';
+import validateRequest from '../../../middlewares/validateRequest';
+import CourseValidators from '../course.validation';
 
 const route = express.Router();
 
@@ -8,7 +10,11 @@ const route = express.Router();
 route.get('/', CourseControllers.getAllCourses);
 route.get('/:id', CourseControllers.getSingleCourse);
 route.get('/:id/reviews', CourseControllers.getSingleCourseWithReviews);
-route.put('/:id', CourseControllers.updateCourse);
+route.put(
+  '/:id',
+  validateRequest(CourseValidators.UpdateCourseValidationSchema),
+  CourseControllers.updateCourse,
+);
 route.delete('/:id', CourseControllers.deleteCourse);
 
 export const CoursesRoutes = route;

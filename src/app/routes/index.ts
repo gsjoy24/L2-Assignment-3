@@ -7,16 +7,16 @@ import { ReviewRoutes } from '../modules/Review/review.route';
 const router = Router();
 const moduleRoutes = [
   {
-    path: '/categories',
-    route: CategoryRoutes,
-  },
-  {
     path: '/course',
     route: CourseRoutesForPostAndBestCourse,
   },
   {
     path: '/courses',
     route: CoursesRoutes,
+  },
+  {
+    path: '/categories',
+    route: CategoryRoutes,
   },
   {
     path: '/reviews',

@@ -4,15 +4,27 @@ type TResponse<T> = {
   success: boolean;
   statusCode: number;
   message?: string;
-  data: T;
+  meta?: {
+    page: number;
+    limit: number;
+    total: number;
+  };
+  data?: T;
 };
+
 const sendResponse = <T>(res: Response, data: TResponse<T>) => {
-  return res.status(data?.statusCode).json({
+  const responseData: TResponse<T> = {
     success: data.success,
     statusCode: data.statusCode || 200,
     message: data.message,
-    data: data.data,
-  });
+  };
+
+  if (data.meta) {
+    responseData.meta = data.meta;
+  }
+  responseData.data = data.data;
+
+  return res.status(data?.statusCode).json(responseData);
 };
 
 export default sendResponse;

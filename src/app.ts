@@ -14,7 +14,10 @@ app.use('/api', router);
 
 // test api
 app.get('/', (req: Request, res: Response) => {
-  res.send('server is running');
+  res.send({
+    success: true,
+    message: 'Server is running',
+  });
 });
 
 // global error handler

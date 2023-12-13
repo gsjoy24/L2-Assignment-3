@@ -59,12 +59,17 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
   const courses = Course.find(queryObject);
   const coursesWithTags = courses.find(searchTags);
   const coursesWithPrice = coursesWithTags.find(minMaxPrice);
-  const SortedCourses = await coursesWithPrice
-    .limit(limit)
-    .skip(skip)
-    .sort(sort);
+  
+  const total = await coursesWithPrice.countDocuments(queryObject);
+  const allCourses = await coursesWithPrice.limit(limit).skip(skip).sort(sort);
 
-  return SortedCourses;
+  const meta = {
+    page,
+    limit,
+    total,
+  };
+
+  return { allCourses, meta };
 };
 
 const getSingleCourseFromDB = async (id: string) => {
@@ -73,7 +78,7 @@ const getSingleCourseFromDB = async (id: string) => {
 };
 
 const updateCourseInDB = async (id: string, data: TCourse) => {
-  const { details, tags, ...restData } = data;
+  const { details, tags, startDate, endDate, ...restData } = data;
   const modifiedData: Record<string, unknown> = { ...restData };
 
   if (details && Object.keys(details).length) {
@@ -130,6 +135,13 @@ const updateCourseInDB = async (id: string, data: TCourse) => {
     if (!addTag) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to update course');
     }
+  }
+
+  if (startDate && endDate) {
+    modifiedData.durationInWeeks = dateToWeeks(
+      startDate as string,
+      endDate as string,
+    );
   }
 
   const course = await Course.findByIdAndUpdate(id, modifiedData, {

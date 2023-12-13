@@ -34,7 +34,7 @@ const globalErrorHandler: ErrorRequestHandler = (
     message = err?.message;
   }
 
-  return res.status(statusCode).json({
+  return res.status(statusCode || 500).json({
     success: false,
     message,
     errorMessage,

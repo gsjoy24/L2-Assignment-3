@@ -11,10 +11,11 @@ route.post(
   CategoryControllers.createCategory,
 );
 route.get('/', CategoryControllers.getAllCategories);
-route.patch(
+route.put(
   '/:id',
   validateRequest(CategoryValidationSchema),
   CategoryControllers.updateCategory,
 );
 route.delete('/:id', CategoryControllers.deleteCategory);
+
 export const CategoryRoutes = route;
